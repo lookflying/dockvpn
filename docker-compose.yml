@@ -1,0 +1,15 @@
+version: "3"
+services:
+    dockvpn:
+        build: .
+        #image: flyingfeng/dockvpn
+        container_name: dockvpn
+        ports:
+            - 1194:1194/udp
+            - 443:443/tcp
+        volumes:
+            - vpndata:/etc/openvpn
+        privileged: true
+volumes:
+    vpndata:
+        driver: local

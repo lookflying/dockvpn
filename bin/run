@@ -7,6 +7,8 @@ set -e
     mknod /dev/net/tun c 10 200
 
 cd /etc/openvpn
+mkdir -p /etc/openvpn/route
+cat /home/routes.txt|sed 's/route/push \"route/' |sed 's/net_gateway 5/net_gateway\"/'> /etc/openvpn/route/route
 # This file tells `serveconfig` that there is a config there
 touch placeholder
 [ -f dh.pem ] ||
@@ -32,6 +34,7 @@ persist-key
 persist-tun
 push "dhcp-option DNS 8.8.8.8"
 push "dhcp-option DNS 8.8.4.4"
+client-config-dir /etc/openvpn/route/
 
 proto tcp-server
 port 443
@@ -52,6 +55,7 @@ persist-key
 persist-tun
 push "dhcp-option DNS 8.8.8.8"
 push "dhcp-option DNS 8.8.4.4"
+client-config-dir /etc/openvpn/route/
 
 proto udp
 port 1194
@@ -67,6 +71,7 @@ MY_IP_ADDR=$(curl -s http://myip.enix.org/REMOTE_ADDR)
 }
 
 [ -f client.ovpn ] || cat >client.ovpn <<EOF
+max-routes 20000
 client
 nobind
 dev tun
