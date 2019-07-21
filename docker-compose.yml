@@ -1,8 +1,8 @@
 version: "3"
 services:
     dockvpn:
-        build: .
-        #image: flyingfeng/dockvpn
+        #build: .
+        image: flyingfeng/dockvpn
         container_name: dockvpn
         ports:
             - 1194:1194/udp
